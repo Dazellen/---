@@ -1,0 +1,260 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Trip {
+protected:
+    string dest;
+    int days;
+
+public:
+    Trip() {
+        dest = "Unknown";
+        days = 0;
+    }
+    Trip(string d, int g = 3) {
+        dest = d;
+        days = g;
+    }
+    virtual ~Trip() {}
+
+    virtual void printInfo() = 0;
+    virtual void performAction() = 0;
+
+    void startTrip() {
+        cout << "Starting the trip to " << dest << endl;
+    }
+    void endTrip() {
+        cout << "Finishing the trip to " << dest << endl;
+    }
+};
+
+class DomesticTrip : public Trip {
+protected:
+    string trans;
+    double budget;
+
+public:
+    DomesticTrip() : Trip() {
+        trans = "Car";
+        budget = 0;
+    }
+    DomesticTrip(string d, int g, string t, double b = 150) : Trip(d, g) {
+        trans = t;
+        budget = b;
+    }
+
+    void bookTransport() {
+        cout << "Transport is successfully booked." << endl;
+    }
+    void visitLandmarks() {
+        cout << "Visiting local landmarks." << endl;
+    }
+
+    void printInfo() override {
+        cout << "Domestic Trip Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Days: " << days << endl;
+        cout << "Transport: " << trans << endl;
+        cout << "Budget: " << budget << " lv" << endl;
+    }
+    void performAction() override {
+        visitLandmarks();
+    }
+};
+
+class CityBreak : public DomesticTrip {
+protected:
+    int museums;
+    string hotel;
+
+public:
+    CityBreak() : DomesticTrip() {
+        museums = 0;
+        hotel = "Standard";
+    }
+    CityBreak(string d, int g, string t, double b, int m = 2, string h = "Standard") : DomesticTrip(d, g, t, b) {
+        museums = m;
+        hotel = h;
+    }
+
+    void exploreCity() {
+        cout << "Exploring the city streets." << endl;
+    }
+    void takePhotos() {
+        cout << "Taking photos of the architecture." << endl;
+    }
+
+    void printInfo() override {
+        cout << "City Break Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Days: " << days << endl;
+        cout << "Transport: " << trans << endl;
+        cout << "Budget: " << budget << " lv" << endl;
+        cout << "Museums to visit: " << museums << endl;
+        cout << "Hotel type: " << hotel << endl;
+    }
+    void performAction() override {
+        exploreCity();
+    }
+};
+
+class LuxuryCityBreak : public CityBreak {
+private:
+    bool spa;
+    string rest;
+
+public:
+    LuxuryCityBreak() : CityBreak() {
+        spa = true;
+        rest = "Luxury";
+    }
+    LuxuryCityBreak(string d, int g, string t, double b, int m, string h, bool s = true, string r = "Gourmet") : CityBreak(d, g, t, b, m, h) {
+        spa = s;
+        rest = r;
+    }
+
+    void reserveVIP() {
+        cout << "VIP table reserved at the restaurant." << endl;
+    }
+    void enjoySpa() {
+        cout << "Enjoying premium SPA procedures." << endl;
+    }
+
+    void printInfo() override {
+        cout << "Luxury City Break Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Days: " << days << endl;
+        cout << "SPA included: " << (spa ? "Yes" : "No") << endl;
+        cout << "Restaurant: " << rest << endl;
+    }
+    void performAction() override {
+        reserveVIP();
+    }
+};
+
+class InternationalTrip : public Trip {
+protected:
+    string country;
+    bool passport;
+
+public:
+    InternationalTrip() : Trip() {
+        country = "Unknown";
+        passport = true;
+    }
+    InternationalTrip(string d, int g, string c, bool p = true) : Trip(d, g) {
+        country = c;
+        passport = p;
+    }
+
+    void checkPassport() {
+        cout << "Checking passport expiration date." << endl;
+    }
+    void exchangeCurrency() {
+        cout << "Exchanging local currency." << endl;
+    }
+
+    void printInfo() override {
+        cout << "International Trip Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Days: " << days << endl;
+        cout << "Country: " << country << endl;
+        cout << "Passport required: " << (passport ? "Yes" : "No") << endl;
+    }
+    void performAction() override {
+        checkPassport();
+    }
+};
+
+class BeachHoliday : public InternationalTrip {
+protected:
+    string beach;
+    int sunbeds;
+
+public:
+    BeachHoliday() : InternationalTrip() {
+        beach = "Public";
+        sunbeds = 0;
+    }
+    BeachHoliday(string d, int g, string c, bool p, string b = "Sandy", int s = 2) : InternationalTrip(d, g, c, p) {
+        beach = b;
+        sunbeds = s;
+    }
+
+    void swim() {
+        cout << "Swimming in the sea." << endl;
+    }
+    void relax() {
+        cout << "Relaxing on the beach." << endl;
+    }
+
+    void printInfo() override {
+        cout << "Beach Holiday Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Country: " << country << endl;
+        cout << "Beach type: " << beach << endl;
+        cout << "Sunbeds reserved: " << sunbeds << endl;
+    }
+    void performAction() override {
+        swim();
+    }
+};
+
+class AdventureTrip : public InternationalTrip {
+private:
+    string activity;
+    int risk;
+
+public:
+    AdventureTrip() : InternationalTrip() {
+        activity = "Hiking";
+        risk = 1;
+    }
+    AdventureTrip(string d, int g, string c, bool p, string act = "Climbing", int r = 5) : InternationalTrip(d, g, c, p) {
+        activity = act;
+        risk = r;
+    }
+
+    void prepareGear() {
+        cout << "Preparing extreme sport equipment." << endl;
+    }
+    void startAdventure() {
+        cout << "Starting the extreme adventure." << endl;
+    }
+
+    void printInfo() override {
+        cout << "Adventure Trip Information:" << endl;
+        cout << "Destination: " << dest << endl;
+        cout << "Activity: " << activity << endl;
+        cout << "Risk level: " << risk << endl;
+    }
+    void performAction() override {
+        startAdventure();
+    }
+};
+
+int main() {
+    const int size = 6;
+    Trip* trips[size];
+
+    trips[0] = new DomesticTrip("Plovdiv", 2, "Train", 120);
+    trips[1] = new CityBreak("Sofia", 3, "Bus", 300, 4, "Grand Hotel");
+    trips[2] = new LuxuryCityBreak("Varna", 5, "Car", 1500, 2, "Spa Resort", true);
+    trips[3] = new InternationalTrip("Rome", 4, "Italy", true);
+    trips[4] = new BeachHoliday("Bali", 10, "Indonesia", true, "Private", 2);
+    trips[5] = new AdventureTrip("Alps", 7, "France", true, "Skiing", 8);
+
+    for (int i = 0; i < size; i++) {
+        trips[i]->printInfo();
+        trips[i]->performAction();
+        trips[i]->startTrip();
+        cout << endl;
+    }
+
+    for (int i = 0; i < size; i++) {
+        delete trips[i];
+    }
+    return 0;
+}
